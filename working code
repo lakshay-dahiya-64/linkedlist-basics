@@ -1,0 +1,193 @@
+#include<iostream>
+using namespace std;
+class node{
+    public:
+int data;
+node* next;
+
+node(int data){
+    this->data=data;
+    this->next=NULL;
+}
+};
+void print(node* &head){
+node* temp=head;
+while(temp!=NULL){
+    cout<<temp->data<<" ";
+    temp=temp->next;
+}
+}
+void insertathead(int data,node* &head,node* &tail){
+    //code for inserting at head
+    if(head==NULL){
+        //checking if there is any head node present before adding 
+          node* newnode = new node(data);
+          //if the linked list is empty then update the node as head and tail both
+     head=newnode;
+     tail=newnode;
+    }
+    else{
+        //if the linked list is not empty then add a new node in the starting of the linked list and name it as head
+          node* newnode = new node(data);
+        newnode->next=head;
+        head=newnode;
+    }
+}
+void insertattail(int data,node* &head,node* &tail){
+
+    //checking if the linked list is empty or not
+    
+    if(tail==NULL){
+    
+        //if the linked list is empty then update the newnode as head and tail
+        node* newnode=new node(data);
+        head=newnode;
+        tail=newnode;
+    }
+    else{
+        //if the link is not empty then add the node at the last of the linked list and name it as tail
+        
+        node* newnode= new node(data);
+        tail->next=newnode;
+        tail=newnode;
+    }
+}
+void deleteathead(node* &head){
+    node* temp;
+    temp=head;
+    head=head->next;
+    delete temp;
+    
+}
+
+//function to find lenght of linked list
+
+int findlenght(node* &head){
+int count=0;
+node* temp=head;
+while(temp!=NULL){
+    temp=temp->next;
+    count++;
+}
+return count;
+}
+void deleteattail(node* &head,node* &tail){
+
+    //function to delete at tail
+
+    node* temp=head->next;
+    node* prev=head;
+
+    //traversing to the second last node of the linked list by traversing a simultaneous node with temp starting with second node
+    //and the other node from the first node
+
+    while(temp != NULL){
+     temp=temp->next;
+     prev=prev->next;
+     if(temp->next==NULL){
+        break;
+     }
+    }
+   
+    node* last=tail;
+    prev->next=NULL;
+    tail=prev;
+    delete last;
+}
+//function to insert a node in the middle of the linked list
+
+void insertatmiddle(node* &tail,node* &head,int position,int data){
+if(position==1){
+    insertathead(data,head,tail);
+    return;
+}
+int len=findlenght(head);
+if(position==len){
+    insertattail(data,head,tail);
+    return;
+}
+else{
+int numberofnodes=1;
+node* current=head;
+node* forward=head->next;
+while(numberofnodes<position-1){
+    current=current->next;
+    forward=forward->next;
+    numberofnodes++;
+}
+node* newnode=new node(data);
+newnode->next=forward;
+current->next=newnode;
+}
+}
+//function for deleting the element in the middle
+void deleteatmiddle(node* &head,node* &tail,int position){
+node* newnode;
+int numberofnodes=1;
+node* current=head;
+node* forward=head->next;
+while(numberofnodes<position-1){
+    current=current->next;
+    forward=forward->next;
+    numberofnodes++;
+}
+newnode=forward;
+current->next=forward->next;
+delete newnode;
+}
+
+
+
+int main(){
+
+    node* tail=NULL;
+    node* head=NULL;
+
+    //insert at head functions
+
+  insertathead(5,head,tail);
+   insertathead(10,head,tail);
+    insertathead(20,head,tail);
+
+    //insert at tail functions
+
+    insertattail(1,head,tail);
+    insertattail(3,head,tail);
+    insertattail(2,head,tail);
+
+    //print function
+
+    cout<<"the linked list is:"<<endl;
+  print(head);
+  cout<<endl<<"after deletion at head: "<<endl;
+
+  //delete at head functions
+
+  deleteathead(head);
+  deleteathead(head);
+  print(head);
+
+ //delete at tail functions
+
+ deleteattail(head,tail);
+
+ cout<<endl<<"after deletion at tail: "<<endl;
+  print(head);
+
+//insert at middle functioins
+
+  insertatmiddle(tail,head,3,40);
+  insertatmiddle(tail,head,3,90);
+  insertatmiddle(tail,head,2,60);
+  cout<<endl<<"linked list after addition in middle is: "<<endl;
+  print(head);
+
+//function for deleting in the middle is
+
+  deleteatmiddle(head,tail,3);
+  cout<<endl<<"linked list after deletion in middle is: "<<endl;
+  print(head);
+
+  
+    return 0;
+}
